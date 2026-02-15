@@ -27,7 +27,7 @@ def get_kernel(
 
     """
 
-    P, P_params = P if isinstance(P, tuple) else (P, None)
+    P, P_params = P if isinstance(P, tuple) else (P, 0)  # default to greedy
     R, R_params = R if isinstance(R, tuple) else (R, None)
     V, V_params = V if isinstance(V, tuple) else (V, None)
 
@@ -50,7 +50,7 @@ def get_kernel(
 
         a_t = P(key_policy, q, P_params)
         r_t = R(key_reward, a_t, R_params)
-        q_next = V(r_t, q, delta, V_params)
+        q_next = V(r_t, a_t, q, delta, V_params)
 
         return q_next, a_t, r_t
     

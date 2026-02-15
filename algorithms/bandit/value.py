@@ -4,7 +4,7 @@ import jax.numpy as jnp
 from chex import Array, PRNGKey
 
 
-def weighted_average(r: Array, q: Array, delta: Array, _):
+def weighted_average(r: Array, a: Array, q: Array, delta: Array, _):
     """
     Calculates the incremental weighted average update step
     
@@ -20,5 +20,7 @@ def weighted_average(r: Array, q: Array, delta: Array, _):
     q_next: The updated value function estimate
 
     """
+    a = jnp.asarray(a, dtype=jnp.int32)
+    td = delta * (r - q[a])
+    return q.at[a].add(td)
 
-    return q + delta * (r - q)

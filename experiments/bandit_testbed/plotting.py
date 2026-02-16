@@ -19,6 +19,7 @@ parser.add_argument("--T", dest="T", type=int, default=20)
 parser.add_argument("--seed", dest="seed", type=int, default=0)
 parser.add_argument("--kernel", dest="kernel", type=int, default=None)
 parser.add_argument("--delta", dest="delta", type=int, default=None)
+parser.add_argument("--epsilon", dest="epsilon", type=int, default=None)
 
 parser.add_argument("--style", type=str, default="stationary")
 
@@ -40,47 +41,40 @@ args = parser.parse_args()
 kernel_type = KernelType(args.kernel)
 
 
-EPS = (0, 1, 10)
-final_pct_eps = np.empty((len(EPS), args.K, args.T))
-avg_rs_eps = np.empty((len(EPS), args.K, args.T))
+# CHECK EXPERIMENT HAS BEEN RAN
+experiment_str = "kernel={},T={},D={},M={},K={},eps={},delta={}"
+experiment_str = experiment_str.format(kernel_type.name, args.T, args.D, args.M, args.K, args.epsilon, args.delta)
 
-for i, EPSILON in enumerate(EPS):
-        
-    # CHECK EXPERIMENT HAS BEEN RAN
-    experiment_str = "kernel={},T={},D={},M={},K={},eps={},delta={}"
-    experiment_str = experiment_str.format(kernel_type.name, args.T, args.D, args.M, args.K, EPSILON, args.delta)
+file_name = f"{experiment_str}.npz"
+datapath = os.path.join("results", file_name)
 
-    file_name = f"{experiment_str}.npz"
-    datapath = os.path.join("results", file_name)
+if not os.path.exists(datapath):
+    error_msg = "No Experiment Found for: kernel={}, T={}, D={}, M={}, K={}, eps={}, delta={}"
+    error_msg = error_msg.format(kernel_type.name, args.T, args.D, args.M, args.K, args.epsilon, args.delta)
+    print(ctext(error_msg, "red"))
+    exit()
 
-    if not os.path.exists(datapath):
-        error_msg = "No Experiment Found for: kernel={}, T={}, D={}, M={}, K={}, eps={}, delta={}"
-        error_msg = error_msg.format(kernel_type.name, args.T, args.D, args.M, args.K, EPSILON, args.delta)
-        print(ctext(error_msg, "red"))
-        continue
+# GENERATE PLOTS
+if not os.path.exists("plots"):
+    os.mkdir("plots")
 
-    data = np.load(f"{datapath}")
-    final_pct_eps[i, ...] = data["final_pct"]
-    avg_rs_eps[i, ...] = data["avg_rs"]
+plotdir = os.path.join("plots", experiment_str)
+if not os.path.exists(plotdir):
+    os.mkdir(plotdir)
+
+data = np.load(f"{datapath}")
 
 
 # PLOT THE MEAN OPTIMAL ACTION %
+final_pct = data["final_pct"]
 plt.figure(figsize=(15, 5))
-for i, EPSILON, in enumerate(EPS):        
-    plt.plot(final_pct_eps[i, 0], label=f"{EPSILON/100}")
-plt.legend()
-plt.xlabel("T")
-plt.ylabel("Optimal Action %")
-plt.savefig(f"e-greedy-pct-comparison.png")
+plt.plot(final_pct[0])
+plt.savefig(f"{plotdir}/final_pct.png")
 plt.close()
 
 # PLOT THE AVERAGE REWARD
+avg_rs = data["avg_rs"]
 plt.figure(figsize=(15, 5))
-for i, EPSILON, in enumerate(EPS):        
-    avg_rs = data["avg_rs"]
-    plt.plot(avg_rs_eps[i, 0], label=f"{EPSILON/100}")
-plt.legend()
-plt.xlabel("T")
-plt.ylabel("Average Reward")
-plt.savefig(f"e-greedy-reward-comparison.png")
+plt.plot(avg_rs[0])
+plt.savefig(f"{plotdir}/avg_rs.png")
 plt.close()

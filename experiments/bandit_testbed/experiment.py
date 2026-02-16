@@ -23,7 +23,7 @@ parser.add_argument("--K", dest="K", type=int, default=1)
 
 parser.add_argument("--T", dest="T", type=int, default=20)
 
-parser.add_argument("--seed", dest="seed", type=int, default=1234)
+parser.add_argument("--seed", dest="seed", type=int, default=0)
 parser.add_argument("--kernel", dest="kernel", type=int, default=None)
 parser.add_argument("--delta", dest="delta", type=int, default=None)
 parser.add_argument("--epsilon", dest="epsilon", type=int, default=None)
@@ -144,15 +144,16 @@ for k, key_k in enumerate(EXPERIMENT_KEYS):
     print(f"""
 Results:
     - Terminal optimal action (% over M): {opt_pct_k[-1]:.2f}
-    - final Q:                            {avg_q_est_k}
+    - Final Q:                            {avg_q_est_k}
+    - True Q:                             {np.asarray(true_q_k)}
 """)
     print()
 
 if not os.path.exists("results"):
     os.mkdir("results")
 
-file_name = "results/kernel={},T={},D={},M={},K={},eps={},delta={}.npz"
-file_name = file_name.format(kernel_type.name, args.T, args.D, args.M, args.K, args.epsilon, args.delta)
+file_name = "results/kernel={},style={},T={},D={},M={},K={},eps={},delta={},optimisitc={},seed={}.npz"
+file_name = file_name.format(kernel_type.name, args.style, args.T, args.D, args.M, args.K, args.epsilon, args.delta, args.optimistic_init, args.seed)
 
 np.savez_compressed(
     file_name,

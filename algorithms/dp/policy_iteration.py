@@ -77,9 +77,9 @@ def policy_evaluation(s: Array, gamma: Array, P: Callable, pi: Array, J: Callabl
     ----------
     s:     The state for which the policy is to be evaluated
     gamma: Discount
-    P:     Policy (Action sampling function). Either a Callable or a tuple of Callable and its parameters
+    P:     Policy (Action sampling function).
     pi:    Deterministic vector mapping states to actions for P
-    J:     Joint model for states and rewards ie p(s', r | s, a). Either a Callable or a tuple of Callable and its parameters
+    J:     Joint model for states and rewards ie p(s', r | s, a).
     V:     Current value function estimate
 
     Returns
@@ -99,7 +99,7 @@ def policy_improvement(J: Callable, actions: Array, s: Array, gamma: Array, V: A
 
     Parameters
     ----------
-    J:        Joint model for states and rewards ie p(s', r | s, a). Either a Callable or a tuple of Callable and its parameters
+    J:        Joint model for states and rewards ie p(s', r | s, a).
     actions:  List of all possible actions
     s:        The state for which to greedily improve the policy
     gamma:    Discount

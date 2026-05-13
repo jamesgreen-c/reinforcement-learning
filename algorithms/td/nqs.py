@@ -114,7 +114,14 @@ def get_kernel(
 
             return G
 
-        G0 = jnp.asarray(0.0)
+        # G0 = jnp.asarray(0.0)
+        K_mod = K % buffer_size
+        G0 = jax.lax.cond(
+            K < T,
+            lambda _: Q[S[K_mod], A[K_mod]],
+            lambda _: jnp.asarray(0.0, dtype=Q.dtype),
+            operand=None,
+        )
         G = jax.lax.fori_loop(0, num_backwards_steps, body, G0)
 
         tau_mod = tau % buffer_size

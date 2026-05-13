@@ -60,6 +60,10 @@ The intended move succeeds with probability $0.9$. With probability $0.1$, the a
 
 The environment is useful for studying how the choice of $n$, $\sigma$, $\alpha$, $\gamma$, and $\epsilon$ affects the stability and speed of off-policy value learning.
 
+## RMS
+
+<img src="rms.png" alt="RMS Error" width="900">
+
 ## Repository Structure
 
 ```text

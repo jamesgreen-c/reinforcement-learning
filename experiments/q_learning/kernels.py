@@ -22,7 +22,7 @@ def sampling_routine(key,
                      n_steps,
                      get_samples=True):
     """
-
+    
     """
 
     def body(carry, key):

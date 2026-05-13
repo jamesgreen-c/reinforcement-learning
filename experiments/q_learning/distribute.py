@@ -36,7 +36,7 @@ def results_exist(*, N, sigma, alpha, epsilon, gamma) -> bool:
 
 Ns = (1, 2, 4, 8, 16, 32, 64, 128, )
 SIGMAs = (0, 1.0, )
-ALPHAs = np.linspace(0.01, 1, num=30)
+ALPHAs = np.round(np.linspace(0.01, 1, num=19), 3)
 EPISLONs = (0.1, )
 GAMMAs = (0.9, )
 
@@ -49,7 +49,7 @@ if args.i != -1 and not (0 <= args.i < len(combination)):
 
 indices = range(len(combination)) if args.i == -1 else [args.i]
 
-for j in indices:
+for j in indices[:3]:
     N, sigma, alpha, eps, gamma = combination[j]
 
     if results_exist(N=N, sigma=sigma, alpha=alpha, epsilon=eps, gamma=gamma):

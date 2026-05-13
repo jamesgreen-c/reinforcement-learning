@@ -112,10 +112,10 @@ if not os.path.exists("results"):
 experiment_name = "n={},sigma={},alpha={},epsilon={},gamma={},episodes={},K={},seed={}"
 experiment_name = experiment_name.format(
     args.N,
-    SIGMA,
-    ALPHA,
-    EPSILON,
-    GAMMA,
+    args.sigma,
+    args.alpha,
+    args.epsilon,
+    args.gamma,
     args.episodes,
     args.K,
     args.seed

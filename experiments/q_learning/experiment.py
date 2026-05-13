@@ -27,10 +27,10 @@ parser.add_argument("--epsilon", type=float, default=0.1)
 parser.add_argument("--N", type=int, default=1)
 
 parser.add_argument("--learn-pi", dest="learn_pi", action="store_true")
-parser.set_defaults(learn_pi=True)
+parser.set_defaults(learn_pi=False)
 
 parser.add_argument("--episodes", type=int, default=10)
-parser.add_argument("--max-iter", dest="max_iter", default=1000)
+parser.add_argument("--max-iter", dest="max_iter", type=int, default=1000)
 
 parser.add_argument("--seed", type=int, default=123)
 parser.add_argument("--debug", action='store_true')

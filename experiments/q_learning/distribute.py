@@ -9,7 +9,7 @@ from algorithms.utils.printing import ctext
 parser = argparse.ArgumentParser()
 parser.add_argument("--i", type=int, default=-1)
 parser.add_argument("--K", type=int, default=1)
-parser.add_argument("--episodes", default=10)
+parser.add_argument("--episodes", type=int, default=10)
 parser.add_argument("--seed", type=int, default=123)
 parser.set_defaults(debug=False)
 args = parser.parse_args()
@@ -29,19 +29,19 @@ def results_exist(*, N, sigma, alpha, epsilon, gamma) -> bool:
         args.K,
         args.seed
     )
-
+    print(experiment_name)
     datapath = os.path.join("results", experiment_name, "data.npz")
     return os.path.exists(datapath)
 
 
 Ns = (1, 2, 4, 8, 16, 32, 64, 128, )
-SIGMAs = (0, 1.0, )
+SIGMAs = (0.0, 1.0, )
 ALPHAs = np.round(np.linspace(0.01, 1, num=19), 3)
-EPISLONs = (0.1, )
+EPSILONs = (0.1, )
 GAMMAs = (0.9, )
 
 
-combination = list(product(Ns, SIGMAs, ALPHAs, EPISLONs, GAMMAs))
+combination = list(product(Ns, SIGMAs, ALPHAs, EPSILONs, GAMMAs))
 print(f"Number of experiments: {len(combination)}")
 
 if args.i != -1 and not (0 <= args.i < len(combination)):
@@ -49,7 +49,7 @@ if args.i != -1 and not (0 <= args.i < len(combination)):
 
 indices = range(len(combination)) if args.i == -1 else [args.i]
 
-for j in indices[:3]:
+for j in indices[:20]:
     N, sigma, alpha, eps, gamma = combination[j]
 
     if results_exist(N=N, sigma=sigma, alpha=alpha, epsilon=eps, gamma=gamma):
@@ -61,4 +61,4 @@ for j in indices[:3]:
     exec_str = "python3 experiment.py --N {} --sigma {} --alpha {} --gamma {} --epsilon {} --K {} --episodes {} --seed {}"
     exec_str = exec_str.format(N, sigma, alpha, gamma, eps, args.K, args.episodes, args.seed)
     print("\nExecuting:", ctext(exec_str, "green"))
-    os.system(exec_str)
+    # os.system(exec_str)

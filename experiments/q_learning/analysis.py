@@ -44,29 +44,28 @@ GAMMA = 0.9
 def plot_rms_against_alpha(dirpath):
 
     fig, ax = plt.subplots(1, 2, figsize=(15, 6))
-    for n in Ns:
+    
+    for n in Ns[:4]:
         RMS_s = np.empty((len(ALPHAs)))
-        RMS_t = np.empty((len(ALPHAs)))
-        
         for j, alpha in enumerate(ALPHAs):
             sarsa_data, _ = load_data(n, 1.0, alpha, EPSILON, GAMMA)
             if sarsa_data is not None:
                 RMS_s[j] = sarsa_data["rms"][0]
             else:
                 RMS_s[j] = np.nan
+        ax[0].plot(ALPHAs, RMS_s, label=f"n={n}")
+    ax[0].set_title(f"Average RMS error over {args.episodes} episodes for Sarsa")
+    ax[0].legend()
 
+    for n in Ns:
+        RMS_t = np.empty((len(ALPHAs)))
+        for j, alpha in enumerate(ALPHAs):
             tree_backup_data, _ = load_data(n, 0.0, alpha, EPSILON, GAMMA)
             if tree_backup_data is not None:
                 RMS_t[j] = tree_backup_data["rms"][0]
             else:
                 RMS_t[j] = np.nan
-            
-        ax[0].plot(ALPHAs, RMS_s, label=f"n={n}")
         ax[1].plot(ALPHAs, RMS_t, label=f"n={n}")
-
-    ax[0].set_title(f"Average RMS error over {args.episodes} episodes for Sarsa")
-    ax[0].legend()
-
     ax[1].set_title(f"Average RMS error over {args.episodes} episodes for Tree Backup")
     ax[1].legend()
 

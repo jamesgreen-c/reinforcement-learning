@@ -58,7 +58,7 @@ for j in indices:
         ))
         continue
 
-    exec_str = "python3 experiment.py --N {} --sigma {} --alpha {} --gamma {} --epsilon {} --K {} --epsiodes {} --seed {}"
+    exec_str = "python3 experiment.py --N {} --sigma {} --alpha {} --gamma {} --epsilon {} --K {} --episodes {} --seed {}"
     exec_str = exec_str.format(N, sigma, alpha, gamma, eps, args.K, args.episodes, args.seed)
-    # print("\nExecuting:", ctext(exec_str, "green"))
-    # os.system(exec_str)
+    print("\nExecuting:", ctext(exec_str, "green"))
+    os.system(exec_str)

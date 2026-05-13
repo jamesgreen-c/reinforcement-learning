@@ -29,7 +29,7 @@ parser.add_argument("--N", type=int, default=1)
 parser.add_argument("--learn-pi", dest="learn_pi", action="store_true")
 parser.set_defaults(learn_pi=True)
 
-parser.add_argument("--episodes", default=10)
+parser.add_argument("--episodes", type=int, default=10)
 parser.add_argument("--max-iter", dest="max_iter", default=1000)
 
 parser.add_argument("--seed", type=int, default=123)
@@ -88,7 +88,6 @@ def one_experiment(key):
     @jax.vmap
     def rms(q):
         return jnp.sqrt((TRUE_Q - q)**2)
-
 
     samples = get_samples(key, args.episodes, True)
     all_qs = samples[-1]

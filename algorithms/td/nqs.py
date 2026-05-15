@@ -267,12 +267,12 @@ def get_kernel(
                     Q=Q,
                 )
 
-                done = tau == (T - 1)
+                done = done | (tau == (T - 1))
 
                 return pi, Q, S, A, R, rho, sigmas, T, done
 
             pi, Q, S, A, R, rho, sigmas, T, done = jax.lax.cond(
-                (tau >= 0) & (~done),
+                (tau >= 0) & (tau < T) & (~done),
                 update_step,
                 lambda args: args,
                 (pi, Q, S, A, R, rho, sigmas, T, done),
